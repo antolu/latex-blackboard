@@ -1,0 +1,91 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{lecture}[2016/11/01 Mall för föreläsningsanteckningar]
+
+\RequirePackage[swedish]{babel}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{xcolor}
+\RequirePackage{amssymb}
+\RequirePackage{amsmath}
+\RequirePackage{wrapfig}
+\RequirePackage{multicol}
+\RequirePackage{fullpage}
+\RequirePackage{fancyhdr}
+\RequirePackage{tikz}
+\RequirePackage[margin=1in,headsep=0.5cm,headheight=13.6pt]{geometry}
+\RequirePackage{physics}
+\RequirePackage{subcaption}
+\RequirePackage{pgfplots}
+\RequirePackage{changepage}
+\RequirePackage{enumitem}
+\RequirePackage{listings}
+
+
+
+\DeclareOption{lecture}{\def\@classtype{Föreläsning}}
+\DeclareOption{exercise}{\def\@classtype{Övning}}
+%\DeclareOption*{\def\@class{\CurrentOption}}
+
+\DeclareOption{SF1544}{\def\@course{SF1544 - Numeriska metoder, grundkurs IV}}
+\DeclareOption{SF1629}{\def\@course{SF1629 del II - Fourieranalys}}
+
+\def\@class{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Inställningar för sidans utseende	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\pagestyle{fancy}
+
+\fancyhead[RO]{\@course \rightmark}
+\fancyhead[LO]{\@classtype \enspace \@class \enspace- \@date\leftmark}
+\fancyfoot[C]{Sida \thepage}
+
+
+\setlength{\parindent}{0pt}
+
+\ProcessOptions\relax
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Nya kommandon för föreläsningsanteckningar	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\kurs}[1]{\def\@kurs{#1}}
+
+
+\newcommand{\sats}[1]{\begin{center}\fbox{\parbox{0.8\linewidth}{\vspace{-0.5cm}\paragraph{Sats:} #1}}\end{center}} %Kommando för satser
+
+\newcommand{\bevis}[1]{\begin{center}\fbox{\parbox{0.9\linewidth}{\vspace{-0.5cm}\paragraph{Bevis:} #1}}\end{center}} %Kommando för bevis
+
+\newcommand{\Def}[1]{\begin{center}
+		\fbox{
+			\parbox{\linewidth}{
+				\vspace{-0.3cm}
+				\paragraph{Definition:}
+				\begin{adjustwidth}{3cm}{}
+					\vspace{-0.5cm}
+					 #1
+				\end{adjustwidth}
+				}
+			}
+			\end{center}
+		}	%Kommando för definitioner
+
+\newcommand{\exempel}[1]{\begin{center}\fbox{\parbox{\linewidth}{\vspace{-0.5cm}\paragraph{Exempel:} #1}}\end{center}} %Kommando för exempel
+
+%\renewcommand{\sum}{\ensuremath{\sum\limits}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Definera nordiska bokstäver för listings	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\lstset{literate=%
+	{å}{{\aa}}1
+	{ä}{{\"{a}}}1
+	{ö}{{\"{o}}}1
+	{Å}{{\AA}}1
+	{Ä}{{\"{A}}}1
+	{Ö}{{\"{O}}}1
+}
+
+\endinput
