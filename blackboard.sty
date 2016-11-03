@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesPackage{lecture}[2016/11/01 Mall för föreläsningsanteckningar]
+\ProvidesPackage{blackboard}[2016/11/01 Mall för föreläsningsanteckningar]
 
 \RequirePackage[swedish]{babel}
 \RequirePackage[T1]{fontenc}
@@ -19,12 +19,18 @@
 \RequirePackage{changepage}
 \RequirePackage{enumitem}
 \RequirePackage{listings}
+\RequirePackage{kvoptions}
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Om det är föreläsning/övning		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \DeclareOption{lecture}{\def\@classtype{Föreläsning}}
 \DeclareOption{exercise}{\def\@classtype{Övning}}
-%\DeclareOption*{\def\@class{\CurrentOption}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Vilken kurs som antecknas			%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \DeclareOption{SF1544}{\def\@course{SF1544 - Numeriska metoder, grundkurs IV}}
 \DeclareOption{SF1629}{\def\@course{SF1629 del II - Fourieranalys}}
@@ -50,30 +56,56 @@
 %	Nya kommandon för föreläsningsanteckningar	%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\kurs}[1]{\def\@kurs{#1}}
-
-
-\newcommand{\sats}[1]{\begin{center}\fbox{\parbox{0.8\linewidth}{\vspace{-0.5cm}\paragraph{Sats:} #1}}\end{center}} %Kommando för satser
-
-\newcommand{\bevis}[1]{\begin{center}\fbox{\parbox{0.9\linewidth}{\vspace{-0.5cm}\paragraph{Bevis:} #1}}\end{center}} %Kommando för bevis
-
-\newcommand{\Def}[1]{\begin{center}
+\providecommand{\sats}[1]{
+	\begin{center}
 		\fbox{
-			\parbox{\linewidth}{
-				\vspace{-0.3cm}
-				\paragraph{Definition:}
-				\begin{adjustwidth}{3cm}{}
-					\vspace{-0.5cm}
-					 #1
-				\end{adjustwidth}
-				}
+			\parbox{0.8\linewidth}{
+				\vspace{-0.5cm}\paragraph{Sats:} #1
 			}
-			\end{center}
-		}	%Kommando för definitioner
+		}
+	\end{center}
+} %Kommando för satser
 
-\newcommand{\exempel}[1]{\begin{center}\fbox{\parbox{\linewidth}{\vspace{-0.5cm}\paragraph{Exempel:} #1}}\end{center}} %Kommando för exempel
+\providecommand{\bevis}[1]{
+	\begin{center}
+		\fbox{
+			\parbox{0.8\linewidth}{
+				\vspace{-0.5cm}\paragraph{Bevis:} #1
+			}
+		}
+	\end{center}
+} %Kommando för bevis
 
-%\renewcommand{\sum}{\ensuremath{\sum\limits}}
+\providecommand{\definition}[1]{
+	\begin{center}
+		\fbox{
+			\parbox{0.8\linewidth}{
+				\vspace{-0.5cm}\paragraph{Definition:} #1
+			}
+		}
+	\end{center}
+}	%Kommando för definitioner
+
+\providecommand{\exempel}[1]{
+	\begin{center}
+		\fbox{
+			\parbox{0.8\linewidth}{
+				\vspace{-0.5cm}\paragraph{Exempel:} #1
+			}
+		}
+	\end{center}
+} %Kommando för exempel
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Kommandon för enklare matematik	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\let\oldsum\sum
+\renewcommand{\sum}{\oldsum\limits} %Summatecken
+
+\let\oldint\int
+\renewcommand{\int}{\oldint\limits}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Definera nordiska bokstäver för listings	%
