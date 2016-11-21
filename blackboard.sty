@@ -27,6 +27,11 @@
 
 \DeclareOption{lecture}{\def\@classtype{Föreläsning}}
 \DeclareOption{exercise}{\def\@classtype{Övning}}
+\DeclareOption{assignment}{\def\@classtype{Inlämningsuppgift} 
+	\fancyhead[LO]{\@classtype \enspace \@class \enspace- \@course}
+	\fancyhead[RO]{\@author}
+	\fancyfoot[R]{CTFYS2} 
+	}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Vilken kurs som antecknas			%
@@ -34,8 +39,7 @@
 
 \DeclareOption{SF1544}{\def\@course{SF1544 - Numeriska metoder, grundkurs IV}}
 \DeclareOption{SF1629}{\def\@course{SF1629 del II - Fourieranalys}}
-
-\def\@class{1}
+\DeclareOption{SG1113}{\def\@course{SG1113 - Mekanik fortsättningskurs}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Inställningar för sidans utseende	%
@@ -49,6 +53,10 @@
 
 
 \setlength{\parindent}{0pt}
+
+\pgfplotsset{compat=1.12}
+
+\providecommand{\classno}[1]{\def\@class{#1}}
 
 \ProcessOptions\relax
 
