@@ -11,7 +11,7 @@
 \RequirePackage{multicol}
 \RequirePackage{fullpage}
 \RequirePackage{fancyhdr}
-\RequirePackage{tikz}
+\RequirePackage{tikz, calc}
 \RequirePackage[margin=1in,headsep=0.5cm,headheight=13.6pt]{geometry}
 \RequirePackage{physics}
 \RequirePackage{subcaption}
@@ -113,6 +113,17 @@
 
 \let\oldint\int
 \renewcommand{\int}{\oldint\limits}
+
+\renewcommand{\deg}{^\circ}
+
+\newlength\@SizeOfCirc
+\newcommand{\CircArrowRight}[1]{%
+	\setlength{\@SizeOfCirc}{\maxof{\widthof{#1}}{\heightof{#1}}}%
+	\tikz [x=1.0ex,y=1.0ex,line width=.15ex, draw=black, baseline=-\the\dimexpr\fontdimen22\textfont2\relax]%
+	\draw [->,anchor=center]%
+	node (0,0) {#1}%
+	(0,-\@SizeOfCirc) arc (-90:180:\@SizeOfCirc);
+}%
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
