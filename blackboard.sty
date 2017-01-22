@@ -1,28 +1,36 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
+% !TEX program = XeLaTeX
 \ProvidesPackage{blackboard}[2016/11/01 Mall för skolarbeten]
 
 \RequirePackage[swedish]{babel}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
+\RequirePackage{fontspec}
 \RequirePackage{xcolor}
+\RequirePackage[margin=1in, bottom=1.3in]{geometry}
+% För att kunna skriva ordentiga mattesymboler
 \RequirePackage{amssymb}
 \RequirePackage{amsmath}
+\RequirePackage{physics}
+\RequirePackage{bm}
+\RequirePackage{tikz, calc}
+
+% För att kunna se till så att figurer gör som jag vill
 \RequirePackage{wrapfig}
 \RequirePackage{multicol}
-\RequirePackage{fancyhdr}
-\RequirePackage{tikz, calc}
-\RequirePackage[margin=1in,headsep=0.5cm,headheight=13.6pt]{geometry}
-%\RequirePackage{physics}
 \RequirePackage{subcaption}
-\RequirePackage{changepage}
 \RequirePackage{enumitem}
+
+% För att kunna bifoga mjukvarukod
 \RequirePackage{listings}
-\RequirePackage{kvoptions}
-\RequirePackage{bm}
+
+% För att kunna anpassa utseended på varje sida
 \RequirePackage{etoolbox}
-\RequirePackage{fontspec}
 \RequirePackage{lastpage}
 \RequirePackage{titlesec}
+\RequirePackage{fancyhdr}
+\RequirePackage{changepage}
+\RequirePackage{scrextend}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Om det är föreläsning/övning		%
@@ -64,9 +72,9 @@
 \newfontfamily\headingfont{Lato}
 
 % Ställ typsnitt och spacing för rubriker
-\titleformat*{\section}{\bfseries\headingfont\fontsize{16}{18}\selectfont\bfseries}
+\titleformat*{\section}{\headingfont\fontsize{16}{18}\selectfont\bfseries}
 %\titlespacing{\section}{0pt}{*2}{-5pt}
-\titleformat*{\subsection}{\bfseries\headingfont\fontsize{14}{16}\selectfont}
+\titleformat*{\subsection}{\headingfont\fontsize{14}{16}\selectfont}
 
 \titleformat*{\subsubsection}{\headingfont\itshape}
 \titlespacing{\subsubsection}{0pt}{*2}{-5pt}
@@ -76,6 +84,8 @@
 % ----------------------------------------------------------------------------------------------- %
 
 \renewcommand\headrulewidth{0pt}
+\addtolength\voffset{-0.6cm}
+\setlength\headheight{60pt}
 
 \ifdefstring{\@author}{}{%
 	\author{Anton Lu}
@@ -90,7 +100,6 @@
 \definecolor{footer}{HTML}{FF6600}
 
 \pagenumbering{arabic} % Arabiska siffror i sidnumreringen
-\setlength\headheight{40 pt}
 
 \lhead{%
 	\textcolor{header}{% 
@@ -139,24 +148,29 @@
 \stepcounter{exempel}
 
 %Kommando för satser
-\providecommand{\sats}[1][]{%
-	\paragraph{Sats \thesats: #1} \stepcounter{sats}
-}
+%\providecommand{\sats}[1][]{%
+%	\paragraph{Sats {\thesats}: #1}\stepcounter{sats}
+%}
+
+\newenvironment{sats}[1][]{\paragraph{Sats {\thesats}: #1}\stepcounter{sats} \begin{addmargin}[1em]{0em} }{ \end{addmargin} }
+\newenvironment{definition}[1][]{\paragraph{Definition {\thedef}: #1}\stepcounter{def} \begin{addmargin}[1em]{0em} }{ \end{addmargin} }
+\newenvironment{exempel}[1][]{\paragraph{Sats {\thesats}: #1}\stepcounter{sats} \begin{addmargin}[1em]{0em} }{ \end{addmargin} }
+\newenvironment{bevis}{\paragraph{\quad Bevis: }\begin{addmargin}[2em]{2em} }{ \end{addmargin} }
 
 %Kommando för bevis
-\providecommand{\bevis}{%
-	\paragraph{Bevis:}
-} 
+%\providecommand{\bevis}{%
+%	\paragraph{Bevis:}
+%} 
 
 %Kommando för definitioner
-\providecommand{\definition}{%
-	\paragraph{Definition \thedef: } \stepcounter{def}
-}	
+%\providecommand{\definition}{%
+%	\paragraph{Definition \thedef: } \stepcounter{def}
+%}	
 
 %Kommando för exempel
-\providecommand{\exempel}[1][]{%
-	\paragraph{Exempel \theexempel: #1}  \stepcounter{exempel}
-} 
+%\providecommand{\exempel}[1][]{%
+%	 \paragraph{Exempel \theexempel: #1}  \stepcounter{exempel} 
+%} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Kommandon för enklare matematik	%
