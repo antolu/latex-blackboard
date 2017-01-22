@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesPackage{blackboard}[2016/11/01 Mall för föreläsningsanteckningar]
+\ProvidesPackage{blackboard}[2016/11/01 Mall för skolarbeten]
 
 \RequirePackage[swedish]{babel}
 \RequirePackage[T1]{fontenc}
@@ -9,126 +9,183 @@
 \RequirePackage{amsmath}
 \RequirePackage{wrapfig}
 \RequirePackage{multicol}
-\RequirePackage{fullpage}
 \RequirePackage{fancyhdr}
 \RequirePackage{tikz, calc}
 \RequirePackage[margin=1in,headsep=0.5cm,headheight=13.6pt]{geometry}
-\RequirePackage{physics}
+%\RequirePackage{physics}
 \RequirePackage{subcaption}
-\RequirePackage{pgfplots}
 \RequirePackage{changepage}
 \RequirePackage{enumitem}
 \RequirePackage{listings}
 \RequirePackage{kvoptions}
+\RequirePackage{bm}
+\RequirePackage{etoolbox}
+\RequirePackage{fontspec}
+\RequirePackage{lastpage}
+\RequirePackage{titlesec}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Om det är föreläsning/övning		%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newtoggle{isHandin}
+\togglefalse{isHandin} % Om dokumentet i fråga är en inlämningsuppgift
+
 \DeclareOption{lecture}{\def\@classtype{Föreläsning}}
 \DeclareOption{exercise}{\def\@classtype{Övning}}
-\DeclareOption{assignment}{\def\@classtype{Inlämningsuppgift} 
-	\fancyhead[LO]{\@classtype \enspace \@class \enspace- \@course}
-	\fancyhead[RO]{\@author}
-	\fancyfoot[R]{CTFYS2} 
+\DeclareOption{handin}{\def\@classtype{Inlämningsuppgift} %
+	\toggletrue{isHandin}
 	}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%	Vilken kurs som antecknas			%
+%	Vilken kurs som behandlas			%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\DeclareOption{SF1544}{\def\@course{SF1544 - Numeriska metoder, grundkurs IV}}
-\DeclareOption{SF1629}{\def\@course{SF1629 del II - Fourieranalys}}
-\DeclareOption{SG1113}{\def\@course{SG1113 - Mekanik fortsättningskurs}}
+\DeclareOption{SF1544}{\def\@coursecode{SF1544} \def\@coursename{Numeriska metoder, grundkurs IV} }
+\DeclareOption{SF1629}{\def\@coursecode{SF1629 del II} \def\@coursename{Fourieranalys} }
+\DeclareOption{SG1113}{\def\@coursecode{SG1113} \def\@coursename{ Mekanik fortsättningskurs} }
+\DeclareOption{SH1012}{\def\@coursecode{SH1012} \def\@coursename{Modern Fysik} }
+\DeclareOption{SF1901}{\def\@coursecode{SF1901} \def\@coursename{Sannolikhetsteori och statistik} }
+\DeclareOption{SE1055}{\def\@coursecode{SE1055} \def\@coursename{Hållfasthetslära, med energimetoder} }
+\DeclareOption{SI1140II}{\def\@coursecode{SI1140 del II} \def\@coursename{Partiella Differentialekvationer} }
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%	Inställningar för sidans utseende	%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\providecommand{\classno}[1]{\def\@class{#1}}
+\providecommand{\pnr}[1]{\def\@pnr{#1} }
+
+% ----------------------------------------------------------------------- %
+%		Generella inställningar för sidans utseende			%
+% ----------------------------------------------------------------------- %
+
+% Tar bort indentering vid nya stycken
+\setlength{\parindent}{0pt}
+
+%%%%%%%%%%%%%    Typsnitt    %%%%%%%%%%%%%%%%%%%
+\defaultfontfeatures{Ligatures=TeX}
+\newfontfamily\headingfont{Century Gothic}
+
+% Ställ typsnitt och spacing för rubriker
+\titleformat*{\section}{\bfseries\headingfont\fontsize{16}{18}\selectfont\bfseries}
+%\titlespacing{\section}{0pt}{*2}{-5pt}
+\titleformat*{\subsection}{\headingfont\fontsize{14}{16}\selectfont}
+
+\titleformat*{\subsubsection}{\headingfont\itshape}
+\titlespacing{\subsubsection}{0pt}{*2}{-5pt}
+
+% ----------------------------------------------------------------------------------------------- %
+% 				Inställningar för sidans sidhuvud och sidfot								%
+% ----------------------------------------------------------------------------------------------- %
+
+\renewcommand\headrulewidth{0pt}
+
+\ifdefstring{\@author}{}{%
+	\author{Anton Lu}
+}{}
+
+\title{\@classtype ~ \@class}
+
+\definecolor{header}{gray}{0.40} %Definierar en gråfärg som är 40% svart,  används i header och footer
+\definecolor{footer}{HTML}{FF6600}
+
+\pagenumbering{arabic} % Arabiska siffror i sidnumreringen
+\setlength\headheight{40 pt}
+
+\lhead{%
+		\textcolor{header}{% 
+			\headingfont\textbf{\@title}\\
+			\iftoggle{isHandin}{% Om det är en inlämnintsuppgift, skriv ut namn och personnummer istället för datum och sidnummer
+				\@author \\
+				%\@pnr
+			}{%
+				\ifdefstring{\@date}{}{
+				}{\@date\\}
+				Sid. \thepage~ av { \pageref{LastPage} }
+			}
+	}
+}
+\makeatletter
+
+\rhead{%
+		\textcolor{header}{% Skriv alltid ut kursnamn och kurskod i header
+			\headingfont\textbf{\@coursename}\\
+			\@coursecode \\
+		}
+	}
+
+\cfoot{%
+	\iftoggle{isHandin}{}{
+		\textcolor{footer}{% 
+		\headingfont\textit{\@author ~ - ~ {\large$\mathfrak{F}$}-15 }
+		}
+	}
+}
+\makeatother
 
 \pagestyle{fancy}
 
-\fancyhead[RO]{\@course \rightmark}
-\fancyhead[LO]{\@classtype \enspace \@class \enspace- \@date\leftmark}
-\fancyfoot[C]{Sida \thepage}
-
-
-\setlength{\parindent}{0pt}
-
-\pgfplotsset{compat=1.12}
-
-\providecommand{\classno}[1]{\def\@class{#1}}
-
 \ProcessOptions\relax
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%	Nya kommandon för föreläsningsanteckningar	%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -------------------------------------------------------------------------- %
+%		Nya kommandon för föreläsningsanteckningar		%
+% -------------------------------------------------------------------------- %
 
-\providecommand{\sats}[1]{
-	\begin{center}
-		\fbox{
-			\parbox{0.8\linewidth}{
-				\vspace{-0.5cm}\paragraph{Sats:} #1
-			}
-		}
-	\end{center}
-} %Kommando för satser
+\newcounter{def}
+\stepcounter{def}
+\newcounter{sats}
+\stepcounter{sats}
+\newcounter{exempel}
+\stepcounter{exempel}
 
-\providecommand{\bevis}[1]{
-	\begin{center}
-		\fbox{
-			\parbox{0.8\linewidth}{
-				\vspace{-0.5cm}\paragraph{Bevis:} #1
-			}
-		}
-	\end{center}
-} %Kommando för bevis
+%Kommando för satser
+\providecommand{\sats}[1][]{%
+	\paragraph{Sats \thesats: #1} \stepcounter{sats}
+}
 
-\providecommand{\definition}[1]{
-	\begin{center}
-		\fbox{
-			\parbox{0.8\linewidth}{
-				\vspace{-0.5cm}\paragraph{Definition:} #1
-			}
-		}
-	\end{center}
-}	%Kommando för definitioner
+%Kommando för bevis
+\providecommand{\bevis}{%
+	\paragraph{Bevis:}
+} 
 
-\providecommand{\exempel}[1]{
-	\begin{center}
-		\fbox{
-			\parbox{0.8\linewidth}{
-				\vspace{-0.5cm}\paragraph{Exempel:} #1
-			}
-		}
-	\end{center}
-} %Kommando för exempel
+%Kommando för definitioner
+\providecommand{\definition}{%
+	\paragraph{Definition \thedef: } \stepcounter{def}
+}	
+
+%Kommando för exempel
+\providecommand{\exempel}[1][]{%
+	\paragraph{Exempel \theexempel: #1}  \stepcounter{exempel}
+} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Kommandon för enklare matematik	%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Alltid snygga summatecken
 \let\oldsum\sum
-\renewcommand{\sum}{\oldsum\limits} %Summatecken
+\renewcommand{\sum}{%
+	\oldsum\limits %
+}
 
+% Alltid snygga integraltecken
 \let\oldint\int
 \renewcommand{\int}{\oldint\limits}
 
+% Enkelt att skriva grader
 \renewcommand{\deg}{^\circ}
 
-\newlength\@SizeOfCirc
+% För att rita en trekvartscirkel med pil för momentekvationen
+\newlength\SizeOfCirc
 \newcommand{\CircArrowRight}[1]{%
-	\setlength{\@SizeOfCirc}{\maxof{\widthof{#1}}{\heightof{#1}}}%
+	\setlength{\SizeOfCirc}{\maxof{\widthof{#1}}{\heightof{#1}}}%
 	\tikz [x=1.0ex,y=1.0ex,line width=.15ex, draw=black, baseline=-\the\dimexpr\fontdimen22\textfont2\relax]%
 	\draw [->,anchor=center]%
 	node (0,0) {#1}%
-	(0,-\@SizeOfCirc) arc (-90:180:\@SizeOfCirc);
-}%
+	(0,-\SizeOfCirc) arc (-90:180:\SizeOfCirc);
+}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%	Definera nordiska bokstäver för listings	%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ------------------------------------------------------------ %
+%	Definera nordiska bokstäver för listings	 %
+% ------------------------------------------------------------ %
 
 \lstset{literate=%
 	{å}{{\aa}}1
