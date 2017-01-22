@@ -61,12 +61,12 @@
 
 %%%%%%%%%%%%%    Typsnitt    %%%%%%%%%%%%%%%%%%%
 \defaultfontfeatures{Ligatures=TeX}
-\newfontfamily\headingfont{Century Gothic}
+\newfontfamily\headingfont{Lato}
 
 % Ställ typsnitt och spacing för rubriker
 \titleformat*{\section}{\bfseries\headingfont\fontsize{16}{18}\selectfont\bfseries}
 %\titlespacing{\section}{0pt}{*2}{-5pt}
-\titleformat*{\subsection}{\headingfont\fontsize{14}{16}\selectfont}
+\titleformat*{\subsection}{\bfseries\headingfont\fontsize{14}{16}\selectfont}
 
 \titleformat*{\subsubsection}{\headingfont\itshape}
 \titlespacing{\subsubsection}{0pt}{*2}{-5pt}
@@ -80,6 +80,9 @@
 \ifdefstring{\@author}{}{%
 	\author{Anton Lu}
 }{}
+\ifdef{\@pnr}{}{%
+	\pnr{960611 - 1475}
+}
 
 \title{\@classtype ~ \@class}
 
@@ -90,26 +93,26 @@
 \setlength\headheight{40 pt}
 
 \lhead{%
-		\textcolor{header}{% 
-			\headingfont\textbf{\@title}\\
-			\iftoggle{isHandin}{% Om det är en inlämnintsuppgift, skriv ut namn och personnummer istället för datum och sidnummer
-				\@author \\
-				%\@pnr
-			}{%
-				\ifdefstring{\@date}{}{
-				}{\@date\\}
-				Sid. \thepage~ av { \pageref{LastPage} }
-			}
+	\textcolor{header}{% 
+		\headingfont\textbf{\@title}\\
+		\iftoggle{isHandin}{% Om det är en inlämnintsuppgift, skriv ut namn och personnummer istället för datum och sidnummer
+			\@author \\
+			\@pnr
+		}{%
+			\ifdefstring{\@date}{}{
+			}{\@date\\}
+			Sid. \thepage~ av { \pageref{LastPage} }
+		}
 	}
 }
 \makeatletter
 
 \rhead{%
-		\textcolor{header}{% Skriv alltid ut kursnamn och kurskod i header
-			\headingfont\textbf{\@coursename}\\
-			\@coursecode \\
-		}
+	\textcolor{header}{% Skriv alltid ut kursnamn och kurskod i header
+		\headingfont\textbf{\@coursename}\\
+		\@coursecode \\
 	}
+}
 
 \cfoot{%
 	\iftoggle{isHandin}{}{
