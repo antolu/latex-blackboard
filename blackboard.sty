@@ -87,9 +87,8 @@
 \addtolength\voffset{-0.6cm}
 \setlength\headheight{60pt}
 
-\ifdefstring{\@author}{}{%
-	\author{Anton Lu}
-}{}
+\ifdefstring{\@author}{}{}{%
+\author{Anton Lu}}
 \ifdef{\@pnr}{}{%
 	\pnr{960611 - 1475}
 }
@@ -153,8 +152,8 @@
 %}
 
 \newenvironment{sats}[1][]{\paragraph{Sats {\thesats}: #1}\stepcounter{sats} \begin{addmargin}[1em]{0em} }{ \end{addmargin} }
-\newenvironment{definition}[1][]{\paragraph{Definition {\thedef}: #1}\stepcounter{def} \begin{addmargin}[1em]{0em} }{ \end{addmargin} }
-\newenvironment{exempel}[1][]{\paragraph{Sats {\thesats}: #1}\stepcounter{sats} \begin{addmargin}[1em]{0em} }{ \end{addmargin} }
+\newenvironment{definition}[1][]{\paragraph{Definition {\thedef}: #1}\stepcounter{def} \begin{addmargin}[1em]{0em} }{ \end{addmargin} \vspace*{12ptcm} }
+\newenvironment{exempel}[1][]{\paragraph{Exempel {\theexempel}: #1}\stepcounter{exempel} \begin{addmargin}[1em]{0em} }{ \end{addmargin} }
 \newenvironment{bevis}{\paragraph{\quad Bevis: }\begin{addmargin}[2em]{2em} }{ \end{addmargin} }
 
 %Kommando för bevis
