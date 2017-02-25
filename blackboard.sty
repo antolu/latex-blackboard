@@ -31,13 +31,17 @@
 \RequirePackage{fancyhdr}
 \RequirePackage{changepage}
 \RequirePackage{scrextend}
+\RequirePackage{xkeyval}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Om det är föreläsning/övning		%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\providecommand{\classno}[1]{\def\@class{#1}}
+
 \newtoggle{isHandin}
 \togglefalse{isHandin} % Om dokumentet i fråga är en inlämningsuppgift
+
 
 \DeclareOption{lecture}{\def\@classtype{Föreläsning}}
 \DeclareOption{exercise}{\def\@classtype{Övning}}
@@ -57,8 +61,8 @@
 \DeclareOption{SE1055}{\def\@coursecode{SE1055} \def\@coursename{Hållfasthetslära, med energimetoder} }
 \DeclareOption{SI1140II}{\def\@coursecode{SI1140 del II} \def\@coursename{Partiella Differentialekvationer} }
 
-\providecommand{\classno}[1]{\def\@class{#1}}
 \providecommand{\pnr}[1]{\def\@pnr{#1} }
+\providecommand{\mail}[1]{\def\@mail{#1}}
 
 % ----------------------------------------------------------------------- %
 %		Generella inställningar för sidans utseende			%
@@ -76,12 +80,16 @@
 %\titlespacing{\section}{0pt}{*2}{-5pt}
 \titleformat*{\subsection}{\headingfont\fontsize{14}{16}\selectfont}
 
-\titleformat*{\subsubsection}{\headingfont\itshape}
-\titlespacing{\subsubsection}{0pt}{*2}{-5pt}
+\titleformat*{\subsubsection}{\headingfont\large\itshape}
+\titlespacing{\subsubsection}{0pt}{*2}{4pt}
 
 % ----------------------------------------------------------------------------------------------- %
 % 				Inställningar för sidans sidhuvud och sidfot								%
 % ----------------------------------------------------------------------------------------------- %
+
+\ifundef{\@classno}{%
+	\def\@classno{X}
+}{}
 
 \renewcommand\headrulewidth{0pt}
 \addtolength\voffset{-0.6cm}
@@ -91,6 +99,9 @@
 \author{Anton Lu}}
 \ifdef{\@pnr}{}{%
 	\pnr{960611 - 1475}
+}
+\ifdef{\@mail}{}{%
+	\mail{antolu@kth.se}
 }
 
 \title{\@classtype ~ \@class}
@@ -103,7 +114,7 @@
 \lhead{%
 	\textcolor{header}{% 
 		\headingfont\textbf{\@title}\\
-		\iftoggle{isHandin}{% Om det är en inlämnintsuppgift, skriv ut namn och personnummer istället för datum och sidnummer
+		\iftoggle{isHandin}{% Om det är en inlämningsuppgift, skriv ut namn och personnummer istället för datum och sidnummer
 			\@author \\
 			\@pnr
 		}{%
@@ -123,11 +134,7 @@
 }
 
 \cfoot{%
-	\iftoggle{isHandin}{}{
-		\textcolor{footer}{% 
-		\headingfont\textit{\@author ~ - ~ {\large$\mathfrak{F}$}-15 }
-		}
-	}
+	{\textcolor{footer}{\headingfont \textit{\@author - \large$\mathfrak{F}$\normalsize-15 - \@mail } } } 
 }
 \makeatother
 
@@ -146,30 +153,10 @@
 \newcounter{exempel}
 \stepcounter{exempel}
 
-%Kommando för satser
-%\providecommand{\sats}[1][]{%
-%	\paragraph{Sats {\thesats}: #1}\stepcounter{sats}
-%}
-
 \newenvironment{sats}[1][]{\paragraph{Sats {\thesats}: #1}\stepcounter{sats} \begin{addmargin}[1em]{0em} }{ \end{addmargin} }
 \newenvironment{definition}[1][]{\paragraph{Definition {\thedef}: #1}\stepcounter{def} \begin{addmargin}[1em]{0em} }{ \end{addmargin} \vspace*{12ptcm} }
 \newenvironment{exempel}[1][]{\paragraph{Exempel {\theexempel}: #1}\stepcounter{exempel} \begin{addmargin}[1em]{0em} }{ \end{addmargin} }
 \newenvironment{bevis}{\paragraph{\quad Bevis: }\begin{addmargin}[2em]{2em} }{ \end{addmargin} }
-
-%Kommando för bevis
-%\providecommand{\bevis}{%
-%	\paragraph{Bevis:}
-%} 
-
-%Kommando för definitioner
-%\providecommand{\definition}{%
-%	\paragraph{Definition \thedef: } \stepcounter{def}
-%}	
-
-%Kommando för exempel
-%\providecommand{\exempel}[1][]{%
-%	 \paragraph{Exempel \theexempel: #1}  \stepcounter{exempel} 
-%} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %	Kommandon för enklare matematik	%
@@ -210,6 +197,26 @@
 	{Å}{{\AA}}1
 	{Ä}{{\"{A}}}1
 	{Ö}{{\"{O}}}1
+}
+
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+\lstset{language=Matlab,%
+	%basicstyle=\color{red},
+	breaklines=true,%
+	morekeywords={matlab2tikz},
+	keywordstyle=\color{blue},%
+	morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+	identifierstyle=\color{black},%
+	stringstyle=\color{mylilas},
+	commentstyle=\color{mygreen},%
+	showstringspaces=false,%without this there will be a symbol in the places where there is a space
+	numbers=left,%
+	numberstyle={\tiny \color{black}},% size of the numbers
+	numbersep=9pt, % this defines how far the numbers are from the text
+	emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+	%emph=[2]{word1,word2}, emphstyle=[2]{style},    
 }
 
 \endinput
