@@ -40,7 +40,7 @@
 \providecommand{\classno}[1]{\def\@class{#1}}
 
 \newtoggle{isHandin}
-\togglefalse{isHandin} %Har portrait som default
+\togglefalse{isHandin} %Har vanligt dokument som default
 
 \DeclareOption{lecture}{\def\@classtype{Föreläsning}}
 \DeclareOption{exercise}{\def\@classtype{Övning}}
@@ -48,8 +48,12 @@
 	\toggletrue{isHandin}
 	}
 
+\newtoggle{noPagenumbering}
+\togglefalse{noPagenumbering}
+\DeclareOption{noPagenumbering}{\toggletrue{noPagenumbering}}
+
 \DeclareOption*{%
-	\PackageError{blackboad}{The specified option `\CurrentOption' is not supported! \\ Kolla om du stavat fel eller fråga Anton om vilka options som fungerar.}%
+	\PackageError{blackboard}{The specified option `\CurrentOption' is not supported! \\ Kolla om du stavat fel eller fråga Anton om vilka options som fungerar.}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,8 +135,10 @@
 			\@pnr
 		}{%
 			\ifdefstring{\@date}{}{
-			}{\@date\\}
-			Sid. \thepage~ av { \pageref{LastPage} }
+				}{\@date\\}
+			\iftoggle{noPagenumbering}{}{
+				Sid. \thepage~ av { \pageref{LastPage} }
+			}
 		}
 	}
 }
