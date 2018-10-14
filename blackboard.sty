@@ -3,7 +3,7 @@
 \ProvidesPackage{blackboard}[2016/11/01 Mall för skolarbeten]
 
 \RequirePackage[T1]{fontenc}
-\RequirePackage{fontspec}
+\RequirePackage{fourier}
 \RequirePackage{xcolor}
 \RequirePackage[margin=1in, bottom=1.3in]{geometry}
 % För att kunna skriva ordentiga mattesymboler
@@ -42,9 +42,9 @@
 \newtoggle{isHandin}
 \togglefalse{isHandin} %Har vanligt dokument som default
 
-\DeclareOption{lecture}{\def\@classtype{Föreläsning}}
-\DeclareOption{exercise}{\def\@classtype{Övning}}
-\DeclareOption{handin}{\def\@classtype{Inlämningsuppgift} %
+\DeclareOption{lecture}{\def\@classtype{Lecture}}
+\DeclareOption{exercise}{\def\@classtype{Exercise}}
+\DeclareOption{handin}{\def\@classtype{Assignment} %
 	\toggletrue{isHandin}
 	}
 
@@ -77,6 +77,11 @@
 \DeclareOption{DD1346}{\def\@coursecode{DD1346} \def\@coursename{Objektorienterad programmering} }
 \DeclareOption{LS1434}{\def\@coursecode{LS1434} \def\@coursename{Français B1 pour Ingénieurs} }
 
+%% Master
+\DeclareOption{DD2301}{\def\@coursecode{DD2301} \def\@coursename{Program integrating course in Machine Learning}}
+\DeclareOption{DD2380}{\def\@coursecode{DD2380} \def\@coursename{Artificial Intelligence}}
+\DeclareOption{DD2421}{\def\@coursecode{DD2421} \def\@coursename{Machine Learning}}
+
 \providecommand{\pnr}[1]{\def\@pnr{#1} }
 \providecommand{\mail}[1]{\def\@mail{#1}}
 
@@ -88,16 +93,13 @@
 \setlength{\parindent}{0pt}
 
 %%%%%%%%%%%%%    Typsnitt    %%%%%%%%%%%%%%%%%%%
-\defaultfontfeatures{Ligatures=TeX}
-\newfontfamily\headingfont{Lato}
-\newfontfamily\codefont{Inconsolata}
 
 % Ställ typsnitt och spacing för rubriker
-\titleformat*{\section}{\headingfont\fontsize{16}{18}\selectfont\bfseries}
+\titleformat*{\section}{\fontsize{16}{18}\selectfont\bfseries}
 %\titlespacing{\section}{0pt}{*2}{-5pt}
-\titleformat*{\subsection}{\headingfont\fontsize{14}{16}\selectfont}
+\titleformat*{\subsection}{\fontsize{14}{16}\selectfont}
 
-\titleformat*{\subsubsection}{\headingfont\large\itshape}
+\titleformat*{\subsubsection}{\large\itshape}
 \titlespacing{\subsubsection}{0pt}{*2}{4pt}
 
 % ----------------------------------------------------------------------------------------------- %
@@ -130,7 +132,7 @@
 
 \lhead{%
 	\textcolor{header}{% 
-		\headingfont\textbf{\@title}\\
+		\textbf{\@title}\\
 		\iftoggle{isHandin}{% Om det är en inlämningsuppgift, skriv ut namn och personnummer istället för datum och sidnummer
 			\@author \\
 			\@pnr
@@ -147,13 +149,13 @@
 
 \rhead{%
 	\textcolor{header}{% Skriv alltid ut kursnamn och kurskod i header
-		\headingfont\textbf{\@coursename}\\
+		\textbf{\@coursename}\\
 		\@coursecode \\
 	}
 }
 
 \cfoot{%
-	{\textcolor{footer}{\headingfont \textit{\@author ~ - \large$\mathfrak{F}$\normalsize-15 - \@mail } } } 
+	{\textcolor{footer}{\textit{\@author ~ - \large$\mathfrak{F}$\normalsize-15 - \@mail } } } 
 }
 \makeatother
 
@@ -204,6 +206,8 @@
 	(0,-\SizeOfCirc) arc (-90:180:\SizeOfCirc);
 }
 
+\newenvironment{alignedequations}[1]{$\begin{alignedat}{#1}}{\end{alignedat}$\\[4pt]}
+
 
 % ------------------------------------------------------------ %
 %	Definera nordiska bokstäver för listings	 %
@@ -213,7 +217,7 @@
 \definecolor{mylilas}{RGB}{170,55,241}
 
 \lstset{language=Matlab,%
-	basicstyle=\codefont,
+	basicstyle=,
 	breaklines=true,%
 	morekeywords={matlab2tikz},
 	keywordstyle=\color{blue},%
