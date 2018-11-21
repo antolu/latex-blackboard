@@ -197,6 +197,11 @@
 % Enkelt att skriva grader
 \renewcommand{\deg}{^\circ}
 
+% Write vectors
+\makeatletter
+\def\Vec{\mathop{\operator@font vec}\nolimits}
+\makeatother
+
 % För att rita en trekvartscirkel med pil för momentekvationen
 \newlength\SizeOfCirc
 \newcommand{\CircArrowRight}[1]{%
