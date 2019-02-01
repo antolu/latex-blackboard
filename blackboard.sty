@@ -18,6 +18,8 @@
 \RequirePackage{multicol}
 \RequirePackage{subcaption}
 \RequirePackage{enumitem}
+\RequirePackage{graphicx}
+\RequirePackage{float}
 
 % För att kunna bifoga mjukvarukod
 \RequirePackage{listings}
@@ -30,6 +32,7 @@
 \RequirePackage{changepage}
 \RequirePackage{scrextend}
 \RequirePackage{xkeyval}
+\RequirePackage{xparse}
 
 \RequirePackage{booktabs}
 
@@ -73,7 +76,7 @@
 \DeclareOption{EI1240}{\def\@coursecode{EI1240} \def\@coursename{Teoretisk Elektroteknik} }
 \DeclareOption{EL1000}{\def\@coursecode{EL1000} \def\@coursename{Reglerteknik} }
 \DeclareOption{SG1218}{\def\@coursecode{SG1218} \def\@coursename{Strömningsmekanik} }
-\DeclareOption{SI1161}{\def\@coursecode{SI1161} \def\@coursename{Statistisk Fysik} }
+\DeclareOption{SI1162}{\def\@coursecode{SI1162} \def\@coursename{Statistisk Fysik} }
 \DeclareOption{DD1346}{\def\@coursecode{DD1346} \def\@coursename{Objektorienterad programmering} }
 \DeclareOption{LS1434}{\def\@coursecode{LS1434} \def\@coursename{Français B1 pour Ingénieurs} }
 
@@ -214,8 +217,17 @@
 
 \newenvironment{alignedequations}[1]{\begin{center}$\begin{alignedat}{#1}\centering}{\end{alignedat}$\end{center}}
 
-\newenvironment{quoteblock}{\begin{tabular}{l|p{0.9\textwidth}} \quad & }{\end{tabular}\\}
-
+\NewDocumentEnvironment{quoteblock}{o}{
+    \begin{table}[H]
+    \begin{tabular}{l|p{0.9\textwidth}}
+        \quad &
+    \IfNoValueTF{#1}{
+        }{
+            \textbf{#1} \\ \quad &
+        }
+    }{
+        \end{tabular}\end{table}
+}
 
 % ------------------------------------------------------------ %
 %	Definera nordiska bokstäver för listings	 %
