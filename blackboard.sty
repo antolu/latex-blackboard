@@ -4,7 +4,7 @@
 
 \RequirePackage[T1]{fontenc}
 \RequirePackage{fourier}
-\RequirePackage{xcolor}
+\RequirePackage[table,x11names]{xcolor}
 \RequirePackage[margin=1in, bottom=1.3in]{geometry}
 % För att kunna skriva ordentiga mattesymboler
 \RequirePackage{amssymb}
@@ -85,6 +85,8 @@
 \DeclareOption{DD2380}{\def\@coursecode{DD2380} \def\@coursename{Artificial Intelligence}}
 \DeclareOption{DD2421}{\def\@coursecode{DD2421} \def\@coursename{Machine Learning}}
 \DeclareOption{DD2434}{\def\@coursecode{DD2434} \def\@coursename{Machine Learning Advanced Course}}
+\DeclareOption{DD2424}{\def\@coursecode{DD2424} \def\@coursename{Deep Learning in Data Science}}
+
 
 \providecommand{\pnr}[1]{\def\@pnr{#1} }
 \providecommand{\mail}[1]{\def\@mail{#1}}
@@ -217,10 +219,10 @@
 
 \newenvironment{alignedequations}[1]{\begin{center}$\begin{alignedat}{#1}\centering}{\end{alignedat}$\end{center}}
 
-\NewDocumentEnvironment{quoteblock}{o}{
+\NewDocumentEnvironment{info}{o}{
     \begin{table}[H]
     \begin{tabular}{l|p{0.9\textwidth}}
-        \quad &
+        \quad &\cellcolor{lightgray}
     \IfNoValueTF{#1}{
         }{
             \textbf{#1} \\ \quad &
